@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='chat.css') }}">
+</head>
+<body>
+
+<div class="chat-box">
+
+    <h1>🤖 AI Chat Assistant</h1>
+
+    <form method="POST">
+
+        <input type="text"
+               name="question"
+               placeholder="Type your question here..."
+               required>
+
+        <button type="submit">Send</button>
+
+    </form>
+
+    <br>
+
+{% if question %}
+<div class="messages">
+    <p><strong>You:</strong> {{ question }}</p>
+</div>
+{% endif %}
+
+{% if answer %}
+<div class="messages">
+    <p><strong>AI:</strong> {{ answer }}</p>
+</div>
+
+<br>
+
+<a href="/download">
+    <button>📥 Download Answer</button>
+</a>
+
+{% endif %}
+<br>
+
+<a href="/chat">
+    <button>🗑 Clear Chat</button>
+</a>
+
+<br><br>
+
+<a href="/dashboard">⬅ Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>📊 Student Dashboard</h1>
+    <p>Welcome to Smart Learning Assistant</p>
+
+    <div class="cards">
+
+        <a href="/chat" class="card">
+    <h2>🤖 AI Chat</h2>
+    <p>Ask AI Questions</p>
+        </a>
+        
+        <a href="/upload" class="card">
+    <h2>📄 PDF Upload</h2>
+    <p>Upload Study Notes</p>
+        </a>
+        <div class="card">
+            <h2>📝 Smart Notes</h2>
+            <p>Generate Notes</p>
+        </div>
+
+        <div class="card">
+            <h2>❓ AI Quiz</h2>
+            <p>Create Quiz</p>
+        </div>
+
+    </div>
+
+    <br>
+
+    <a href="/">⬅ Back to Home</a>
+
+</div>
+
+<a href="/chat" class="card">
+    <h2>🤖 AI Chat</h2>
+    <p>Ask AI Questions</p>
+</a>
+
+<a href="/upload" class="card">
+    <h2>📄 PDF Upload</h2>
+    <p>Upload Study Notes</p>
+</a>
+
+<a href="/chat" class="card">
+    <h2>📚 PDF AI</h2>
+    <p>Ask Questions from PDF</p>
+</a>
+
+<a href="/download" class="card">
+    <h2>📥 Download Answer</h2>
+    <p>Download AI Response</p>
+</a>
+
+
+</body>
+</html>

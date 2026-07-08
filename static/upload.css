@@ -1,0 +1,28 @@
+body{
+    background:#0f172a;
+    color:white;
+    font-family:Arial;
+}
+
+.upload-box{
+    width:400px;
+    margin:80px auto;
+    text-align:center;
+    background:#1e293b;
+    padding:30px;
+    border-radius:15px;
+}
+
+button{
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#2563eb;
+    color:white;
+    cursor:pointer;
+}
+
+a{
+    color:#38bdf8;
+    text-decoration:none;
+}

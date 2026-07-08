@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+</head>
+<body>
+
+<h2>🔍 Search Result</h2>
+
+{% if result %}
+    <h3>🔍 Search Result</h3>
+
+    <ul>
+    {% for line in result %}
+        <li>{{ line }}</li>
+    {% endfor %}
+    </ul>
+
+{% else %}
+    <p>No result found.</p>
+{% endif %}
+
+<br>
+
+<a href="/dashboard">⬅ Back to Dashboard</a>
+
+<br>
+
+<a href="/dashboard">⬅ Back to Dashboard</a>
+
+</body>
+</html>
