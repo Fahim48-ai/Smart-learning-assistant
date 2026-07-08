@@ -1,9 +1,8 @@
-import PyPDF2
 import os
+import PyPDF2
 import google.generativeai as genai
-from flask import send_file
 from dotenv import load_dotenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 
 load_dotenv()
 
@@ -16,28 +15,32 @@ last_answer = ""
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def home():
     return render_template("index.html")
+
 
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
 
+
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
-
-    global last_answer
     global pdf_text
+    global last_answer
 
     question = ""
     answer = ""
 
     if request.method == "POST":
+
         question = request.form["question"]
 
-        response = model.generate_content(
-            f"""
+        try:
+
+            prompt = f"""
 You are a Smart Learning Assistant.
 
 Use the uploaded PDF as the primary source.
@@ -49,16 +52,21 @@ User Question:
 {question}
 
 Instructions:
-- If the answer is available in the PDF, answer using the PDF.
-- If the answer is NOT available in the PDF, answer using your general knowledge.
-- Mention when the answer comes from general knowledge instead of the PDF.
+- If the answer exists in the PDF, answer from the PDF.
+- If it is not available in the PDF, answer using your general knowledge.
+- Mention when the answer is from general knowledge.
 """
-        )
 
-        answer = response.text
+            response = model.generate_content(prompt)
+            answer = response.text
+
+        except Exception as e:
+            answer = f"Error: {str(e)}"
+
         last_answer = answer
 
     return render_template("chat.html", question=question, answer=answer)
+
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload():
@@ -67,26 +75,39 @@ def upload():
 
     if request.method == "POST":
 
-        file = request.files["pdf"]
+        file = request.files.get("pdf")
 
-        if file:
-            filename = "uploads/" + file.filename
+        if file and file.filename != "":
+
+            os.makedirs("uploads", exist_ok=True)
+
+            filename = os.path.join("uploads", file.filename)
+
             file.save(filename)
 
             text = ""
 
             with open(filename, "rb") as pdf_file:
+
                 reader = PyPDF2.PdfReader(pdf_file)
 
                 for page in reader.pages:
-                    text += page.extract_text() or ""
-                pdf_text = text
+                    page_text = page.extract_text()
 
-            os.remove(filename)
+                    if page_text:
+                        text += page_text + "\n"
+
+            pdf_text = text
+
+            try:
+                os.remove(filename)
+            except:
+                pass
 
             return render_template("pdf_text.html", text=text)
 
     return render_template("upload.html")
+
 
 @app.route("/search", methods=["POST"])
 def search():
@@ -95,24 +116,29 @@ def search():
 
     word = request.form["word"]
 
-    lines = pdf_text.splitlines()
-
     result = []
 
-    for line in lines:
+    for line in pdf_text.splitlines():
+
         if word.lower() in line.lower():
             result.append(line)
 
     return render_template("search.html", word=word, result=result)
 
+
 @app.route("/download")
 def download():
 
-    with open("answer.txt", "w", encoding="utf-8") as file:
-        file.write(last_answer)
+    global last_answer
+
+    with open("answer.txt", "w", encoding="utf-8") as f:
+        f.write(last_answer)
 
     return send_file("answer.txt", as_attachment=True)
 
+
 if __name__ == "__main__":
+
     port = int(os.environ.get("PORT", 5000))
+
     app.run(host="0.0.0.0", port=port)
