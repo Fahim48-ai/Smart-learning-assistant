@@ -1,5 +1,9 @@
 # Smart Learning Assistant
 
+## Live Website
+
+[🚀 Open Smart Learning Assistant](https://smart-learning-assistant-cxif.onrender.com/)
+
 An AI-powered learning assistant built using Flask and Google Gemini AI.
 
 ## Features
